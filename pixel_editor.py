@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsPixmapItem,
 import numpy as np
 import os
 
-TOTAL_LED_NUM = 1216
+TOTAL_LED_NUM = 16*16
 
 class RGB_ITEM(QGraphicsEllipseItem):
     def __init__(self):
@@ -32,7 +32,7 @@ class RGB_ITEM(QGraphicsEllipseItem):
             self.setPen(QPen(Qt.black))
 
 
-class ImageViewer(QGraphicsView):
+class PixelEditor(QGraphicsView):
     """ 图片查看器 """
 
     def __init__(self, parent=None):
@@ -49,8 +49,7 @@ class ImageViewer(QGraphicsView):
         self.displayedImageSize = QSize(0, 0)
 
         # 从文件中读取数组
-        self.x_buff = np.load("x_buff.npy")
-        self.y_buff = np.load("y_buff.npy")
+        self.xy_buff = np.load("screen_layout_rec16x16.npy")
 
         # 初始化小部件
         self.__initWidget()
@@ -78,7 +77,7 @@ class ImageViewer(QGraphicsView):
         for i in range(TOTAL_LED_NUM):
             objs[i].set_seq(i)
             objs[i].setRect(0, 0, 5, 5)
-            objs[i].setPos(self.x_buff[i], self.y_buff[i])
+            objs[i].setPos(self.xy_buff[i][0], self.xy_buff[i][1])
             self.graphicsScene.addItem(objs[i])
 
         # for item in self.graphicsScene.items():
